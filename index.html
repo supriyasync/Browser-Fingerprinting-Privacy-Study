@@ -3,12 +3,34 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Browser Fingerprint Measurement</title>
+    <title>Browser Fingerprinting Signal Collector</title>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <h1>Browser Fingerprinting Study</h1>
-    <p>Localhost privacy measurement probe initialized.</p>
+    <div class="container">
+      <header>
+        <h1>Browser Environment & Signal Collector</h1>
+        <p class="subtitle">
+          Controlled, consent-based client-side signal inspection.
+        </p>
+      </header>
+
+      <section class="table-card">
+        <table id="signals-table">
+          <thead>
+            <tr>
+              <th>Attribute / Signal</th>
+              <th>API Source</th>
+              <th>Observed Value</th>
+            </tr>
+          </thead>
+          <tbody id="signals-body">
+            <!-- Populated dynamically by app.js -->
+          </tbody>
+        </table>
+      </section>
+    </div>
+
     <script src="app.js"></script>
   </body>
 </html>
