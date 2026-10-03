@@ -13,6 +13,15 @@
         <p class="subtitle">
           Controlled, consent-based client-side signal inspection.
         </p>
+        <!-- ADD THIS BLOCK inside <header> right after <p class="subtitle"> -->
+        <div class="controls">
+          <button id="btn-export" class="btn primary">
+            Download Profile JSON
+          </button>
+          <button id="btn-recollect" class="btn secondary">
+            Re-run Collection
+          </button>
+        </div>
       </header>
 
       <section class="table-card">
@@ -29,6 +38,13 @@
           </tbody>
         </table>
       </section>
+      <!-- ADD THIS LINE right after </section> and before the closing </div> -->
+      <canvas
+        id="fingerprint-canvas"
+        width="280"
+        height="60"
+        style="display: none"
+      ></canvas>
     </div>
 
     <script src="app.js"></script>

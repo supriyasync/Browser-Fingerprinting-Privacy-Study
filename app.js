@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
   // Defensive checks for storage access
   function checkLocalStorage() {
     try {
@@ -38,7 +38,75 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Day 3 Core Signal Registry
+  // 1. SHA-256 Hashing helper via native Web Crypto API
+  async function computeSHA256(message) {
+    const msgBuffer = new TextEncoder().encode(message);
+    const hashBuffer = await crypto.subtle.digest("SHA-256", msgBuffer);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
+  }
+
+  // 2. Offscreen Canvas Fingerprint Generator
+  async function getCanvasFingerprint() {
+    try {
+      const canvas = document.getElementById("fingerprint-canvas");
+      if (!canvas || !canvas.getContext) return { hash: "Unsupported" };
+
+      const ctx = canvas.getContext("2d");
+      // Set background canvas styling
+      ctx.textBaseline = "top";
+      ctx.font = "14px 'Arial', 'Times New Roman', sans-serif";
+      ctx.textBaseline = "alphabetic";
+      ctx.fillStyle = "#f60";
+      ctx.fillRect(125, 1, 62, 20);
+
+      // Render overlapping glyphs with varied colors and alpha blending
+      ctx.fillStyle = "#069";
+      ctx.fillText("MPI-Privacy-Study, \u2603", 2, 15);
+      ctx.fillStyle = "rgba(102, 204, 0, 0.7)";
+      ctx.fillText("MPI-Privacy-Study, \u2603", 4, 17);
+
+      // Extract raw rasterized pixels as a data URL and compute SHA-256
+      const dataUri = canvas.toDataURL();
+      const hash = await computeSHA256(dataUri);
+      return { hash: hash.substring(0, 16) }; // 16-character hexadecimal prefix
+    } catch (e) {
+      return { hash: "Blocked / Error" };
+    }
+  }
+
+  // 3. WebGL Driver & Hardware Unmasking
+  function getWebGLHardwareInfo() {
+    try {
+      const canvas = document.createElement("canvas");
+      const gl =
+        canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
+      if (!gl) return { vendor: "Unsupported", renderer: "Unsupported" };
+
+      const debugInfo = gl.getExtension("WEBGL_debug_renderer_info");
+      if (!debugInfo) {
+        return {
+          vendor: gl.getParameter(gl.VENDOR) || "Generic",
+          renderer: gl.getParameter(gl.RENDERER) || "Generic",
+        };
+      }
+
+      return {
+        vendor:
+          gl.getParameter(debugInfo.UNMASKED_VENDOR_WEBGL) || "Unavailable",
+        renderer:
+          gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL) || "Unavailable",
+      };
+    } catch (e) {
+      return { vendor: "Blocked / Error", renderer: "Blocked / Error" };
+    }
+  }
+
+  // Execute active probes
+  const canvasResult = await getCanvasFingerprint();
+  const webglInfo = getWebGLHardwareInfo();
+
+  // Day 4 Signal Registry (Expanded)
   const signals = [
     {
       name: "Timestamp",
@@ -113,9 +181,24 @@ document.addEventListener("DOMContentLoaded", () => {
       value: checkCanvasSupport() ? "Supported" : "Unsupported",
     },
     {
+      name: "Canvas 2D Hash (SHA-256)",
+      api: "canvas.toDataURL() -> SHA256",
+      value: canvasResult.hash,
+    },
+    {
       name: "WebGL 3D Support",
       api: "canvas.getContext('webgl')",
       value: checkWebGLSupport() ? "Supported" : "Unsupported",
+    },
+    {
+      name: "WebGL Unmasked Vendor",
+      api: "WEBGL_debug_renderer_info.UNMASKED_VENDOR",
+      value: webglInfo.vendor,
+    },
+    {
+      name: "WebGL Unmasked Renderer",
+      api: "WEBGL_debug_renderer_info.UNMASKED_RENDERER",
+      value: webglInfo.renderer,
     },
     {
       name: "Local Storage Availability",
@@ -149,4 +232,35 @@ document.addEventListener("DOMContentLoaded", () => {
 
     tbody.appendChild(row);
   });
+
+  // JSON Export Handler
+  function exportProfileJSON() {
+    const payload = {
+      collectionTimestamp: new Date().toISOString(),
+      attributes: signals.reduce((acc, curr) => {
+        acc[curr.name] = curr.value;
+        return acc;
+      }, {}),
+    };
+
+    const blob = new Blob([JSON.stringify(payload, null, 2)], {
+      type: "application/json",
+    });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `fingerprint-${Date.now()}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  // Bind UI buttons
+  document
+    .getElementById("btn-export")
+    .addEventListener("click", exportProfileJSON);
+  document
+    .getElementById("btn-recollect")
+    .addEventListener("click", () => window.location.reload());
 });

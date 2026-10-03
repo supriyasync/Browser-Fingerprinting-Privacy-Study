@@ -88,3 +88,41 @@ td:nth-child(3) {
 tr:hover {
   background-color: #273549;
 }
+
+/* ADD THIS AT THE BOTTOM OF style.css */
+.controls {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.btn {
+  padding: 0.6rem 1.1rem;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 0.85rem;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.btn.primary {
+  background-color: #0284c7;
+  color: #ffffff;
+  border-color: #0369a1;
+}
+
+.btn.primary:hover {
+  background-color: #0369a1;
+}
+
+.btn.secondary {
+  background-color: #1e293b;
+  color: #cbd5e1;
+  border-color: #475569;
+}
+
+.btn.secondary:hover {
+  background-color: #334155;
+  color: #f8fafc;
+}
