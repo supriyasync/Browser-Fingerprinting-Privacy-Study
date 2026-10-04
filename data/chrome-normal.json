@@ -1,0 +1,24 @@
+{
+  "collectionTimestamp": "2026-10-03T09:06:16.378Z",
+  "attributes": {
+    "Timestamp": "2026-10-03T09:06:05.167Z",
+    "User Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36",
+    "Browser Languages": "en-IN, en-GB, en-US, en",
+    "Host Platform": "Win32",
+    "Cookies Enabled": "true",
+    "Screen Dimensions": "1327 x 829",
+    "Available Screen Area": "1327 x 781",
+    "Color Depth": "24-bit",
+    "Device Pixel Ratio": 1.4479166269302368,
+    "Timezone": "Asia/Calcutta",
+    "Hardware Concurrency (CPU Cores)": "18 logical cores",
+    "Device Memory (RAM)": "~16 GB",
+    "Canvas 2D Support": "Supported",
+    "Canvas 2D Hash (SHA-256)": "8b6f2badf80a6066",
+    "WebGL 3D Support": "Supported",
+    "WebGL Unmasked Vendor": "Google Inc. (Intel)",
+    "WebGL Unmasked Renderer": "ANGLE (Intel, Intel(R) Arc(TM) Graphics (0x00007D55) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+    "Local Storage Availability": "Available",
+    "Session Storage Availability": "Available"
+  }
+}
