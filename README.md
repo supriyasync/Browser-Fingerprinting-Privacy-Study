@@ -80,23 +80,45 @@ Data was collected on a consistent host system (Intel Arc GPU, 18 logical CPU co
 
 ---
 
-## 5. Repository Structure
+## 5. Literature Review & Theoretical Grounding
+
+This study contextualizes local empirical observations against three foundation papers in modern fingerprinting literature:
+
+1. **Empirical Attribute Instability [Application Layer]:**
+   - _Paper:_ Eadem, Sed Aliter: A Large-Scale Longitudinal Study on Browser Fingerprint Instability [IMC '26].
+   - _Documentation:_ [`docs/paper-1-notes.md`](docs/paper-1-notes.md)
+   - _Relevance:_ Explains real-world attribute churn and why static browser baselines exhibit non-deterministic feature flips.
+
+2. **Adversarial Resilience & Defensive Modeling [Security Perspective]:**
+   - _Paper:_ An Explainable and Adversarially Resilient Deep Learning Framework for Secure Browser Fingerprinting and User Identification [IJCSIS '26].
+   - _Documentation:_ [`docs/paper-2-notes.md`](docs/paper-2-notes.md)
+   - _Relevance:_ Explores the dual-use nature of fingerprinting for fraud detection and risk-based authentication against intentional client spoofing.
+
+3. **Network-Level Traffic Analysis [Transport Layer]:**
+   - _Paper:_ Website Fingerprinting Attacks and Defense Techniques: A Survey [ACM Computing Surveys].
+   - _Documentation:_ [`docs/paper-3-notes.md`](docs/paper-3-notes.md)
+   - _Relevance:_ Maps the broader privacy landscape, distinguishing client-side JavaScript Web API tracking from encrypted network traffic side-channel leakage.
+
+## 6. Repository Structure
 
 ```text
 ├── index.html               # Semantic UI dashboard for signal inspection
 ├── style.css                # Interface styling and layout
 ├── app.js                   # Client-side collector, Canvas probe, and JSON exporter
 ├── analyze.js               # Automated Node.js empirical stability evaluation script
-├── data/                    # Captured empirical environment profiles (.json)
+├── data/                    # Captured empirical environment profiles [.json]
 │   ├── chrome-normal.json
 │   ├── chrome-incognito.json
 │   └── edge-normal.json
 └── docs/                    # Research documentation & literature notes
     ├── literature-notes.md
-    └── stability-matrix.md
+    ├── stability-matrix.md
+    ├── paper-1-notes.md
+    ├── paper-2-notes.md
+    └── paper-3-notes.md
 ```
 
-## 6. How to Reproduce
+## 7. How to Reproduce
 
 1. Clone the repository:
    git clone https://github.com/supriyasync/Browser-Fingerprinting-Privacy-Study.git
