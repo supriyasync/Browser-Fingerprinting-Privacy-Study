@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Browser Fingerprinting Signal Collector</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>Browser Environment & Signal Collector</h1>
+        <p class="subtitle">
+          Controlled, consent-based client-side signal inspection.
+        </p>
+
+        <div
+          class="controls"
+          style="margin-bottom: 15px; display: flex; flex-wrap: wrap; gap: 10px"
+        >
+          <!-- Metadata for Research Record -->
+          <input
+            type="text"
+            id="config-id"
+            placeholder="Config ID (e.g., firefox-strict)"
+            style="padding: 8px"
+          />
+          <input
+            type="text"
+            id="browser-name"
+            placeholder="Browser (e.g., Firefox)"
+            style="padding: 8px"
+          />
+          <input
+            type="text"
+            id="browser-version"
+            placeholder="Version (e.g., 120.0)"
+            style="padding: 8px"
+          />
+          <input
+            type="text"
+            id="os-name"
+            placeholder="OS (e.g., Windows 11)"
+            style="padding: 8px"
+          />
+          <input
+            type="text"
+            id="mode-name"
+            placeholder="Mode (e.g., Strict Tracking)"
+            style="padding: 8px"
+          />
+          <input
+            type="number"
+            id="run-number"
+            placeholder="Run #"
+            min="1"
+            max="10"
+            style="padding: 8px; width: 80px"
+          />
+
+          <button id="btn-export" class="btn primary">
+            Download Profile JSON
+          </button>
+          <button id="btn-recollect" class="btn secondary">
+            Re-run Collection
+          </button>
+        </div>
+      </header>
+
+      <section class="table-card">
+        <table id="signals-table">
+          <thead>
+            <tr>
+              <th>Signal</th>
+              <th>Status</th>
+              <th>Value</th>
+              <th>Error / Notes</th>
+            </tr>
+          </thead>
+          <tbody id="signals-body">
+            <!-- Populated dynamically -->
+          </tbody>
+        </table>
+      </section>
+
+      <canvas
+        id="fingerprint-canvas"
+        width="240"
+        height="60"
+        style="display: none"
+      ></canvas>
+    </div>
+
+    <!-- The type="module" allows us to split app.js into smaller files -->
+    <script type="module" src="app.js"></script>
+  </body>
+</html>

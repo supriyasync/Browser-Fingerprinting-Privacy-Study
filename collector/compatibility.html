@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Usability & Compatibility Test</title>
+    <link rel="stylesheet" href="style.css" />
+    <!-- Test 1: External Font Loading -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* Removed the hardcoded dark background. Only animation and font specifics remain. */
+      @keyframes spin {
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+      .spinner {
+        width: 30px;
+        height: 30px;
+        border: 4px solid #eaeaec;
+        border-top: 4px solid #3498db;
+        border-radius: 50%;
+        animation: spin 2s linear infinite;
+        margin-top: 10px;
+      }
+      .custom-font {
+        font-family: "Courier Prime", monospace;
+        color: #d32f2f;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>Usability Breakage Test</h1>
+        <p class="subtitle">
+          Does the privacy defense break normal web features?
+        </p>
+        <div style="margin-top: 20px">
+          <a href="index.html" class="btn secondary">Back to Collector</a>
+        </div>
+      </header>
+
+      <section class="test-box">
+        <h3>1. Web Typography (External Fonts)</h3>
+        <p class="custom-font">
+          If this text looks like a typewriter, external web fonts are loading
+          successfully. If it looks like normal text, the browser blocked the
+          font request to prevent tracking.
+        </p>
+      </section>
+
+      <section class="test-box">
+        <h3>2. CSS Animations & Rendering</h3>
+        <p>
+          You should see a spinning blue circle below. If it is frozen or
+          missing, animation frames are restricted.
+        </p>
+        <div class="spinner"></div>
+      </section>
+
+      <section class="test-box">
+        <h3>3. HTML5 Form Functionality</h3>
+        <p>
+          Try submitting this form empty. You should see a native browser
+          warning.
+        </p>
+        <form
+          onsubmit="
+            event.preventDefault();
+            alert('Form submitted!');
+          "
+          style="margin-top: 10px"
+        >
+          <input
+            type="email"
+            placeholder="Test Email (Required)"
+            required
+            style="padding: 8px"
+          />
+          <input type="date" required style="padding: 8px" />
+          <button type="submit" class="btn primary">Test Submit</button>
+        </form>
+      </section>
+
+      <section class="test-box">
+        <h3>4. Visible Canvas Rendering</h3>
+        <p>
+          You should see a red box with blue text below. If blank, Canvas is
+          visually blocked.
+        </p>
+        <canvas
+          id="visual-canvas"
+          width="200"
+          height="50"
+          style="border: 1px solid #eaeaec; background: #fff; margin-top: 10px"
+        ></canvas>
+      </section>
+    </div>
+
+    <script>
+      // Draw to the visual canvas to test if standard rendering works
+      const canvas = document.getElementById("visual-canvas");
+      const ctx = canvas.getContext("2d");
+      if (ctx) {
+        ctx.fillStyle = "#ff0000";
+        ctx.fillRect(10, 10, 50, 30);
+        ctx.fillStyle = "#0000ff";
+        ctx.font = "14px Arial";
+        ctx.fillText("Visible", 70, 30);
+      }
+    </script>
+  </body>
+</html>
