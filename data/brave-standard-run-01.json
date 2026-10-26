@@ -1,0 +1,65 @@
+{
+  "metadata": {
+    "configId": "brave-standard",
+    "browser": "Brave",
+    "version": "156.0.8078.48",
+    "os": "Windows 11",
+    "mode": "Standard",
+    "runNumber": "01",
+    "timestamp": "2026-10-26T03:51:59.865Z"
+  },
+  "signals": [
+    {
+      "name": "User Agent",
+      "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36",
+      "status": "Available"
+    },
+    {
+      "name": "Screen Resolution",
+      "value": "1327x829 (24-bit)",
+      "status": "Available"
+    },
+    {
+      "name": "Do Not Track (DNT)",
+      "value": "Unspecified",
+      "status": "Available"
+    },
+    {
+      "name": "Timezone",
+      "value": "Asia/Calcutta",
+      "status": "Available"
+    },
+    {
+      "name": "Languages",
+      "value": "en-US, en",
+      "status": "Available"
+    },
+    {
+      "name": "Hardware Concurrency",
+      "value": "18 Cores",
+      "status": "Available"
+    },
+    {
+      "name": "Device Memory",
+      "value": "16 GB",
+      "status": "Available",
+      "notes": ""
+    },
+    {
+      "name": "Canvas Fingerprint",
+      "value": "defacdc02f0f27b0...",
+      "status": "Available",
+      "notes": "Successfully hashed"
+    },
+    {
+      "name": "WebGL Renderer",
+      "value": "Google Inc. (Intel) ~ ANGLE (Intel, Intel(R) Arc(TM) Graphics (0x00007D55) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+      "status": "Available"
+    },
+    {
+      "name": "Audio Base Latency",
+      "value": "0.01",
+      "status": "Available"
+    }
+  ]
+}

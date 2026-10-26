@@ -1,0 +1,65 @@
+{
+  "metadata": {
+    "configId": "firefox-standard",
+    "browser": "FireFox",
+    "version": "158.0.1",
+    "os": "Windows 11",
+    "mode": "Standard",
+    "runNumber": "01",
+    "timestamp": "2026-10-26T03:55:52.178Z"
+  },
+  "signals": [
+    {
+      "name": "User Agent",
+      "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:158.0) Gecko/20100101 Firefox/158.0",
+      "status": "Available"
+    },
+    {
+      "name": "Screen Resolution",
+      "value": "1312x820 (24-bit)",
+      "status": "Available"
+    },
+    {
+      "name": "Do Not Track (DNT)",
+      "value": "Unspecified",
+      "status": "Available"
+    },
+    {
+      "name": "Timezone",
+      "value": "Asia/Kolkata",
+      "status": "Available"
+    },
+    {
+      "name": "Languages",
+      "value": "en-US, en",
+      "status": "Available"
+    },
+    {
+      "name": "Hardware Concurrency",
+      "value": "18 Cores",
+      "status": "Available"
+    },
+    {
+      "name": "Device Memory",
+      "value": "N/A",
+      "status": "Blocked",
+      "notes": "API not supported in this browser"
+    },
+    {
+      "name": "Canvas Fingerprint",
+      "value": "74b010175df78e1b...",
+      "status": "Available",
+      "notes": "Successfully hashed"
+    },
+    {
+      "name": "WebGL Renderer",
+      "value": "Google Inc. (Intel) ~ ANGLE (Intel, Intel(R) Arc(TM) A750 Graphics Direct3D11 vs_5_0 ps_5_0), or similar",
+      "status": "Available"
+    },
+    {
+      "name": "Audio Base Latency",
+      "value": "Fallback",
+      "status": "Available"
+    }
+  ]
+}

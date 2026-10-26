@@ -4,65 +4,100 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Browser Fingerprinting Signal Collector</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <div class="container">
       <header>
-        <h1>Browser Environment & Signal Collector</h1>
-        <p class="subtitle">
-          Controlled, consent-based client-side signal inspection.
-        </p>
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 24px;
+          "
+        >
+          <div>
+            <h1>Browser Environment & Signal Collector</h1>
+            <p class="subtitle" style="margin-bottom: 0">
+              Controlled, consent-based client-side signal inspection.
+            </p>
+          </div>
+          <a href="compatibility.html" class="btn" style="text-decoration: none"
+            >Go to Usability Test</a
+          >
+        </div>
+
+        <div class="controls-grid">
+          <div class="input-group">
+            <label>Config ID</label>
+            <input
+              type="text"
+              id="config-id"
+              class="meta-input"
+              placeholder="e.g., firefox-strict"
+            />
+          </div>
+          <div class="input-group">
+            <label>Browser</label>
+            <input
+              type="text"
+              id="browser-name"
+              class="meta-input"
+              placeholder="e.g., Firefox"
+            />
+          </div>
+          <div class="input-group">
+            <label>Version</label>
+            <input
+              type="text"
+              id="browser-version"
+              class="meta-input"
+              placeholder="e.g., 120.0"
+            />
+          </div>
+          <div class="input-group">
+            <label>OS</label>
+            <input
+              type="text"
+              id="os-name"
+              class="meta-input"
+              placeholder="e.g., Windows 11"
+            />
+          </div>
+          <div class="input-group">
+            <label>Mode</label>
+            <input
+              type="text"
+              id="privacy-mode"
+              class="meta-input"
+              placeholder="e.g., Strict Tracking"
+            />
+          </div>
+          <div class="input-group">
+            <label>Run #</label>
+            <input
+              type="text"
+              id="run-number"
+              class="meta-input"
+              placeholder="e.g., 01"
+            />
+          </div>
+        </div>
 
         <div
-          class="controls"
-          style="margin-bottom: 15px; display: flex; flex-wrap: wrap; gap: 10px"
+          class="action-buttons"
+          style="margin-bottom: 30px; display: flex; gap: 12px"
         >
-          <!-- Metadata for Research Record -->
-          <input
-            type="text"
-            id="config-id"
-            placeholder="Config ID (e.g., firefox-strict)"
-            style="padding: 8px"
-          />
-          <input
-            type="text"
-            id="browser-name"
-            placeholder="Browser (e.g., Firefox)"
-            style="padding: 8px"
-          />
-          <input
-            type="text"
-            id="browser-version"
-            placeholder="Version (e.g., 120.0)"
-            style="padding: 8px"
-          />
-          <input
-            type="text"
-            id="os-name"
-            placeholder="OS (e.g., Windows 11)"
-            style="padding: 8px"
-          />
-          <input
-            type="text"
-            id="mode-name"
-            placeholder="Mode (e.g., Strict Tracking)"
-            style="padding: 8px"
-          />
-          <input
-            type="number"
-            id="run-number"
-            placeholder="Run #"
-            min="1"
-            max="10"
-            style="padding: 8px; width: 80px"
-          />
-
-          <button id="btn-export" class="btn primary">
-            Download Profile JSON
+          <button id="run-btn" class="btn primary" disabled>
+            Run Collection
           </button>
-          <button id="btn-recollect" class="btn secondary">
-            Re-run Collection
+          <button id="download-btn" class="btn" disabled>
+            Download Profile JSON
           </button>
         </div>
       </header>

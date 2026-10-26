@@ -1,0 +1,65 @@
+{
+  "metadata": {
+    "configId": "brave-strict",
+    "browser": "Brave",
+    "version": "156.0.8078.48",
+    "os": "Windows 11",
+    "mode": "Shields Up",
+    "runNumber": "02",
+    "timestamp": "2026-10-26T03:53:47.871Z"
+  },
+  "signals": [
+    {
+      "name": "User Agent",
+      "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36",
+      "status": "Available"
+    },
+    {
+      "name": "Screen Resolution",
+      "value": "1366x768 (24-bit)",
+      "status": "Available"
+    },
+    {
+      "name": "Do Not Track (DNT)",
+      "value": "Unspecified",
+      "status": "Available"
+    },
+    {
+      "name": "Timezone",
+      "value": "Asia/Calcutta",
+      "status": "Available"
+    },
+    {
+      "name": "Languages",
+      "value": "en-US",
+      "status": "Available"
+    },
+    {
+      "name": "Hardware Concurrency",
+      "value": "15 Cores",
+      "status": "Available"
+    },
+    {
+      "name": "Device Memory",
+      "value": "16 GB",
+      "status": "Available",
+      "notes": ""
+    },
+    {
+      "name": "Canvas Fingerprint",
+      "value": "6c6863d05ca3d660...",
+      "status": "Available",
+      "notes": "Successfully hashed"
+    },
+    {
+      "name": "WebGL Renderer",
+      "value": "Brave ~ Brave",
+      "status": "Available"
+    },
+    {
+      "name": "Audio Base Latency",
+      "value": "0.01",
+      "status": "Available"
+    }
+  ]
+}

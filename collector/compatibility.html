@@ -3,115 +3,153 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Usability & Compatibility Test</title>
+    <title>Usability Breakage Test</title>
     <link rel="stylesheet" href="style.css" />
-    <!-- Test 1: External Font Loading -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Courier+Prime&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
     <style>
-      /* Removed the hardcoded dark background. Only animation and font specifics remain. */
+      .font-test {
+        font-family: "Courier Prime", monospace;
+        color: var(--danger-color);
+        font-size: 15px;
+        font-weight: bold;
+      }
+
+      .loader {
+        border: 4px solid var(--border-color);
+        border-top: 4px solid var(--primary-color);
+        border-radius: 50%;
+        width: 32px;
+        height: 32px;
+        animation: spin 1s linear infinite;
+      }
+
       @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
         100% {
           transform: rotate(360deg);
         }
       }
-      .spinner {
-        width: 30px;
-        height: 30px;
-        border: 4px solid #eaeaec;
-        border-top: 4px solid #3498db;
-        border-radius: 50%;
-        animation: spin 2s linear infinite;
-        margin-top: 10px;
+
+      .form-group {
+        display: flex;
+        gap: 12px;
+        align-items: center;
       }
-      .custom-font {
-        font-family: "Courier Prime", monospace;
-        color: #d32f2f;
-        font-weight: bold;
+
+      #form-success {
+        color: var(--success-color);
+        font-weight: 500;
+        font-size: 14px;
+        display: none;
+        margin-top: 12px;
+      }
+
+      .nav-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
       }
     </style>
   </head>
   <body>
     <div class="container">
-      <header>
-        <h1>Usability Breakage Test</h1>
-        <p class="subtitle">
-          Does the privacy defense break normal web features?
-        </p>
-        <div style="margin-top: 20px">
-          <a href="index.html" class="btn secondary">Back to Collector</a>
+      <div class="nav-header">
+        <div>
+          <h1 style="margin-bottom: 4px">Usability Breakage Test</h1>
+          <p class="subtitle" style="margin-bottom: 0">
+            Does the privacy defense break normal web features?
+          </p>
         </div>
-      </header>
+        <a href="index.html" class="btn" style="text-decoration: none"
+          >Back to Collector</a
+        >
+      </div>
 
-      <section class="test-box">
-        <h3>1. Web Typography (External Fonts)</h3>
-        <p class="custom-font">
+      <div class="test-card">
+        <div class="test-title">1. Web Typography (External Fonts)</div>
+        <p class="test-desc">
           If this text looks like a typewriter, external web fonts are loading
           successfully. If it looks like normal text, the browser blocked the
-          font request to prevent tracking.
+          font request.
         </p>
-      </section>
+        <p class="font-test">The quick brown fox jumps over the lazy dog.</p>
+      </div>
 
-      <section class="test-box">
-        <h3>2. CSS Animations & Rendering</h3>
-        <p>
+      <div class="test-card">
+        <div class="test-title">2. CSS Animations & Rendering</div>
+        <p class="test-desc">
           You should see a spinning blue circle below. If it is frozen or
           missing, animation frames are restricted.
         </p>
-        <div class="spinner"></div>
-      </section>
+        <div class="loader"></div>
+      </div>
 
-      <section class="test-box">
-        <h3>3. HTML5 Form Functionality</h3>
-        <p>
-          Try submitting this form empty. You should see a native browser
-          warning.
+      <div class="test-card">
+        <div class="test-title">3. HTML5 Form Functionality</div>
+        <p class="test-desc">
+          Try submitting this form empty to trigger a native warning, or fill it
+          out to test successful submission.
         </p>
-        <form
-          onsubmit="
-            event.preventDefault();
-            alert('Form submitted!');
-          "
-          style="margin-top: 10px"
-        >
+        <form id="test-form" class="form-group">
           <input
             type="email"
+            class="meta-input"
             placeholder="Test Email (Required)"
             required
-            style="padding: 8px"
+            style="width: 220px"
           />
-          <input type="date" required style="padding: 8px" />
+          <input type="date" class="meta-input" required style="width: 160px" />
           <button type="submit" class="btn primary">Test Submit</button>
         </form>
-      </section>
+        <div id="form-success">
+          ✅ Form submitted successfully! (Page reload prevented)
+        </div>
+      </div>
 
-      <section class="test-box">
-        <h3>4. Visible Canvas Rendering</h3>
-        <p>
-          You should see a red box with blue text below. If blank, Canvas is
-          visually blocked.
+      <div class="test-card">
+        <div class="test-title">4. Visible Canvas Rendering</div>
+        <p class="test-desc">
+          You should see a solid red box with blue text below. If blank, Canvas
+          rendering is visually blocked.
         </p>
         <canvas
-          id="visual-canvas"
+          id="visible-canvas"
           width="200"
           height="50"
-          style="border: 1px solid #eaeaec; background: #fff; margin-top: 10px"
+          style="border: 1px solid var(--border-color)"
         ></canvas>
-      </section>
+      </div>
     </div>
 
     <script>
-      // Draw to the visual canvas to test if standard rendering works
-      const canvas = document.getElementById("visual-canvas");
-      const ctx = canvas.getContext("2d");
-      if (ctx) {
-        ctx.fillStyle = "#ff0000";
-        ctx.fillRect(10, 10, 50, 30);
-        ctx.fillStyle = "#0000ff";
-        ctx.font = "14px Arial";
-        ctx.fillText("Visible", 70, 30);
+      // Intercept form submission to prevent reload and show success
+      document
+        .getElementById("test-form")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+          document.getElementById("form-success").style.display = "block";
+        });
+
+      // Draw the visible canvas test
+      const canvas = document.getElementById("visible-canvas");
+      if (canvas.getContext) {
+        const ctx = canvas.getContext("2d");
+        ctx.fillStyle = "red";
+        ctx.fillRect(10, 10, 40, 30);
+
+        ctx.fillStyle = "#60A5FA"; // Bright light blue for dark mode
+        ctx.font = "500 14px Inter, sans-serif";
+        ctx.fillText("Visible", 60, 30);
       }
     </script>
   </body>
