@@ -10,19 +10,12 @@ const allSignals = new Set();
 files.forEach((file) => {
   try {
     const raw = fs.readFileSync(path.join(dataDir, file), "utf8");
-
-    // Skip empty files
-    if (!raw.trim()) {
-      console.log(`Skipping ${file}: File is completely empty.`);
-      return;
-    }
+    if (!raw.trim()) return;
 
     const data = JSON.parse(raw);
-
     let configId = file.replace(".json", "");
     let signals = [];
 
-    // Support BOTH old data format (arrays) and new format (objects with metadata)
     if (Array.isArray(data)) {
       signals = data;
     } else if (data && data.signals) {
@@ -30,55 +23,53 @@ files.forEach((file) => {
       if (data.metadata && data.metadata.configId) {
         configId = data.metadata.configId;
       }
-    } else {
-      console.log(`Skipping ${file}: Unrecognized JSON format.`);
-      return;
-    }
+    } else return;
 
     profiles[configId] = {};
 
     signals.forEach((sig) => {
       if (sig && sig.name) {
         allSignals.add(sig.name);
-        profiles[configId][sig.name] = {
-          status: sig.status || "N/A",
-          value: sig.value || "N/A",
-        };
+        // Extracting actual values instead of status
+        profiles[configId][sig.name] = sig.value || "N/A";
       }
     });
-  } catch (error) {
-    // Print the exact reason JSON.parse failed
-    console.error(`Error parsing ${file}: ${error.message}`);
-  }
+  } catch (error) {}
 });
 
-console.log("\n--- Fingerprinting Signal Comparison ---");
+console.log("\n--- Actual Signal Values (Proof of Spoofing) ---");
 
 const signalArray = Array.from(allSignals);
 
-if (signalArray.length === 0) {
-  console.log(
-    "No valid signals found. Please re-run the collector to generate fresh JSON files.",
-  );
-} else {
+if (signalArray.length > 0) {
+  const targetSignals = [
+    "Canvas Fingerprint",
+    "WebGL Renderer",
+    "Hardware Concurrency",
+    "Device Memory",
+  ];
+
   const header = [
-    "Signal".padEnd(25),
-    ...Object.keys(profiles).map((p) => p.padEnd(15)),
+    "Signal".padEnd(22),
+    ...Object.keys(profiles).map((p) => p.substring(0, 14).padEnd(14)),
   ].join(" | ");
   console.log(header);
   console.log("-".repeat(header.length));
 
-  signalArray.forEach((signal) => {
-    const row = [signal.padEnd(25)];
+  targetSignals.forEach((signal) => {
+    if (!signalArray.includes(signal)) return;
+
+    const row = [signal.padEnd(22)];
     Object.keys(profiles).forEach((profile) => {
-      const sigData = profiles[profile][signal];
-      let display = sigData ? sigData.status : "N/A";
+      let val = profiles[profile][signal] || "N/A";
 
-      if (display === "Blocked") display = "❌ Blocked";
-      if (display === "Available") display = "✅ Avail";
-      if (display === "Unspecified") display = "⚠️ Unspec";
-
-      row.push(display.padEnd(15));
+      // Truncating so the table doesn't break in terminal
+      if (typeof val === "string" && val.length > 14) {
+        val = val.substring(0, 11) + "...";
+      } else if (typeof val !== "string") {
+        val = String(val);
+      }
+      row.push(val.padEnd(14));
     });
     console.log(row.join(" | "));
   });
