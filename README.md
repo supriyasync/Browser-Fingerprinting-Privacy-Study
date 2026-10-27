@@ -12,7 +12,7 @@ This study investigates:
 
 1. The real-world stability of active rendering probes (HTML5 Canvas 2D and WebGL unmasking).
 2. The privacy boundary of private browsing modes (e.g., Google Chrome Incognito).
-3. Cross-browser linkability across Chromium-based browsers running on identical host hardware.
+3. Cross-browser linkability and the efficacy of active spoofing and API blocking in privacy-focused browsers (Brave, Firefox).
 
 ---
 
@@ -37,46 +37,35 @@ The collection engine (`app.js`) samples 19 discrete attributes across four prim
 
 ## 3. Empirical Findings
 
-Data was collected on a consistent host system (Intel Arc GPU, 18 logical CPU cores, 16 GB RAM) across three distinct contexts:
+Data was collected on a consistent host system across multiple browsers and contexts to evaluate the stability of fingerprinting vectors and the effectiveness of built-in defenses.
 
-- **Environment A:** Google Chrome (Default Session)
-- **Environment B:** Google Chrome (Incognito Mode)
-- **Environment C:** Microsoft Edge (Default Session)
+### Stability & Spoofing Matrix
 
-### Stability Matrix Summary
-
-| Signal / Attribute           | Incognito Resilience | Cross-Browser Resilience | Baseline Value (Chrome)              |
-| ---------------------------- | -------------------- | ------------------------ | ------------------------------------ |
-| **Canvas 2D Hash (SHA-256)** | **Stable**           | **Stable**               | `8b6f2badf80a6066`                   |
-| **WebGL Unmasked Renderer**  | **Stable**           | **Stable**               | `ANGLE (Intel, Intel(R) Arc(TM)...)` |
-| **Hardware Concurrency**     | **Stable**           | **Stable**               | `18 logical cores`                   |
-| **Device Memory**            | **Stable**           | **Stable**               | `~16 GB`                             |
-| **Screen Dimensions**        | **Stable**           | **Stable**               | `1327 x 829`                         |
-| **Device Pixel Ratio**       | **Stable**           | **Stable**               | `1.4479166269302368`                 |
-| **Timezone**                 | **Stable**           | **Stable**               | `Asia/Calcutta`                      |
-| **Host Platform**            | **Stable**           | **Stable**               | `Win32`                              |
-| **User Agent**               | **Stable**           | _Variant_                | `Mozilla/5.0... Chrome/154.0.0.0`    |
-| **Browser Languages**        | _Variant_            | _Variant_                | `en-IN, en-GB, en-US, en`            |
-| **Timestamp**                | _Variant_            | _Variant_                | Runtime-dependent                    |
+| Signal / Attribute       | Chrome (Incognito) | Edge (InPrivate) | Opera (Secured)  | Brave (Strict)   | Firefox (Strict) |
+| ------------------------ | ------------------ | ---------------- | ---------------- | ---------------- | ---------------- |
+| **Canvas 2D Hash**       | `defacdc02f0...`   | `defacdc02f0...` | `defacdc02f0...` | `6c6863d05ca...` | `74b010175df...` |
+| **WebGL Renderer**       | Google Inc....     | Google Inc....   | Google Inc....   | Brave ~ Brave    | Google Inc....   |
+| **Hardware Concurrency** | 18 Cores           | 18 Cores         | 18 Cores         | 15 Cores         | 8 Cores          |
+| **Device Memory**        | 16 GB              | 16 GB            | 16 GB            | 16 GB            | N/A (Blocked)    |
 
 ### Key Observations:
 
-1. **The Incognito Fallacy:** **16 out of 19 attributes** remained completely invariant between Normal and Incognito modes. While private browsing isolates stateful storage upon session termination, it provides zero protection against stateless hardware and rendering identification.
-2. **Cross-Browser Linkability:** Because both Chrome and Edge rely on the Chromium rendering pipeline and Direct3D11 ANGLE abstraction, the SHA-256 canvas digest and unmasked GPU string remained identical across both applications, enabling cross-browser device correlation.
+1. **The Incognito Fallacy:** Standard private browsing modes (Chrome Incognito, Edge InPrivate, Opera Secured) provide zero protection against stateless hardware and rendering identification. They exposed the exact same underlying hardware (18 cores, 16 GB RAM) and generated identical Canvas hashes (`defacdc02f0...`), allowing trivial cross-session linkage.
+2. **Active Spoofing (Noise Injection):** Brave (Strict mode) actively defends against identification by injecting mathematical noise into APIs. It dynamically altered the Canvas hash (`6c6863d05ca...`), overwrote the WebGL unmasked vendor string (`Brave ~ Brave`), and spoofed the hardware concurrency (reporting 15 cores instead of 18).
+3. **API Masking & Blocking:** Firefox (Strict mode) employs a homogenization strategy. It strictly capped the reported hardware concurrency at 8 cores to blend into a broader device pool, completely blocked access to the `navigator.deviceMemory` API, and isolated the Canvas output (`74b010175df...`).
 
 ---
 
 ## 4. Evaluated Defense Mechanisms
 
 1. **Randomization / Farbling (e.g., Brave Browser):**
-   - Introduces imperceptible mathematical pseudo-random noise directly into canvas pixel data and audio buffer outputs.
+   - Introduces imperceptible pseudo-random noise directly into canvas pixel data and audio buffer outputs.
    - _Outcome:_ Breaks temporal stability; the canvas hash shifts on every session, preventing long-term identifier linkage.
-2. **Homogenization (e.g., Tor Browser):**
-   - Restricts canvas readback behind an explicit user authorization prompt and returns blank canvases to untrusted scripts.
-   - Standardizes screen sizes into discrete viewport buckets (letterboxing) and enforces uniform system fonts.
+2. **Homogenization (e.g., Tor Browser, Firefox Strict):**
+   - Restricts high-entropy APIs or standardizes outputs to blend users into a large anonymity set.
+   - _Outcome:_ Caps hardware metrics (e.g., CPU cores) and blocks sensitive memory APIs to reduce the uniqueness of the fingerprint.
 3. **API Deprecation & Entropy Budgets (Privacy Sandbox):**
    - Replaces high-entropy user-agent strings with structured User-Agent Client Hints (`Sec-CH-UA`).
-   - Reduces the fidelity of `navigator.deviceMemory` and `navigator.hardwareConcurrency` to broad, capped buckets.
 
 ---
 
@@ -86,18 +75,20 @@ This study contextualizes local empirical observations against three foundation 
 
 1. **Empirical Attribute Instability [Application Layer]:**
    - _Paper:_ Eadem, Sed Aliter: A Large-Scale Longitudinal Study on Browser Fingerprint Instability [IMC '26].
-   - _Documentation:_ [`docs/paper-1-notes.md`](docs/paper-1-notes.md)
+   - _Documentation:_ `docs/paper-1-notes.md`
    - _Relevance:_ Explains real-world attribute churn and why static browser baselines exhibit non-deterministic feature flips.
 
 2. **Adversarial Resilience & Defensive Modeling [Security Perspective]:**
    - _Paper:_ An Explainable and Adversarially Resilient Deep Learning Framework for Secure Browser Fingerprinting and User Identification [IJCSIS '26].
-   - _Documentation:_ [`docs/paper-2-notes.md`](docs/paper-2-notes.md)
+   - _Documentation:_ `docs/paper-2-notes.md`
    - _Relevance:_ Explores the dual-use nature of fingerprinting for fraud detection and risk-based authentication against intentional client spoofing.
 
 3. **Network-Level Traffic Analysis [Transport Layer]:**
    - _Paper:_ Website Fingerprinting Attacks and Defense Techniques: A Survey [ACM Computing Surveys].
-   - _Documentation:_ [`docs/paper-3-notes.md`](docs/paper-3-notes.md)
+   - _Documentation:_ `docs/paper-3-notes.md`
    - _Relevance:_ Maps the broader privacy landscape, distinguishing client-side JavaScript Web API tracking from encrypted network traffic side-channel leakage.
+
+---
 
 ## 6. Repository Structure
 
@@ -107,9 +98,6 @@ This study contextualizes local empirical observations against three foundation 
 ├── app.js                   # Client-side collector, Canvas probe, and JSON exporter
 ├── analyze.js               # Automated Node.js empirical stability evaluation script
 ├── data/                    # Captured empirical environment profiles [.json]
-│   ├── chrome-normal.json
-│   ├── chrome-incognito.json
-│   └── edge-normal.json
 └── docs/                    # Research documentation & literature notes
     ├── literature-notes.md
     ├── stability-matrix.md
